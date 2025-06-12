@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيديو جينيس | VideoGenius AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #a55eea;
+            --secondary: #8854d0;
+            --dark: #f5f6fa;
+            --light: #1e272e;
+            --success: #00b894;
+            --danger: #d63031;
+            --card-bg: #2d3436;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            animation: float 3s ease-in-out infinite, pulse 2s infinite;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, rgba(165, 94, 234, 0.1), rgba(136, 84, 208, 0.1));
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1574717024453-354a7d62fcf0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: -1;
+            loading="lazy";
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        /* Upload Section */
+        .upload-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin: 0 auto;
+            max-width: 800px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+        }
+
+        .upload-container:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .dropzone {
+            border: 3px dashed var(--secondary);
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            background: rgba(170, 170, 170, 0.05);
+        }
+
+        .dropzone.active {
+            background: rgba(165, 94, 234, 0.1);
+        }
+
+        .dropzone i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dropzone p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .dropzone span.or {
+            display: block;
+            margin: 1.5rem 0;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .dropzone span.or::before,
+        .dropzone span.or::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--dark);
+            opacity: 0.3;
+        }
+
+        .dropzone span.or::before {
+            right: 0;
+        }
+
+        .dropzone span.or::after {
+            left: 0;
+        }
+
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.6);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn i {
+            font-size: 1.2rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        /* Services Section */
+        .services-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .service-card:hover i {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--dark);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin-top: 2rem;
+            animation: fadeIn 0.8s;
+        }
+
+        .preview-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: none;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        /* Alerts */
+        .alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            background: var(--success);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(150%);
+            transition: all 0.4s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert.show {
+            transform: translateX(0);
+        }
+
+        .alert-danger {
+            background: var(--danger);
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            direction: rtl;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--dark);
+        }
+
+        .copyright {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Info Sections */
+        .info-section {
+            display: none;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 3rem auto;
+            box-shadow: var(--card-shadow);
+            direction: rtl;
+        }
+
+        .info-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .info-section p {
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .back-btn {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .upload-container {
+                padding: 2rem 1rem;
+            }
+            
+            .services-section {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .service-card {
+                padding: 1.5rem;
+            }
+            
+            .upload-container {
+                padding: 1.5rem 0.5rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .info-section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <header>
+        <div class="logo">
+            <i class="fas fa-magic"></i>
+            <span>فيديو جينيس</span>
+        </div>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <section class="hero">
+            <h1>أحترف تحرير الفيديوهات بالذكاء الاصطناعي</h1>
+            <p>منصة متكاملة تمنحك تحكمًا كاملًا في محتواك المرئي والصوتي بأدوات ذكية وسهلة</p>
+        </section>
+
+        <section class="upload-container">
+            <div class="dropzone" id="dropzone">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>اسحب وأسقط ملف الفيديو أو الصوت هنا</p>
+                <span class="or">أو</span>
+                <button class="btn"><i class="fas fa-folder-open"></i> استعرض الملفات</button>
+                <input type="file" id="fileInput" accept="video/*, audio/*" style="display: none;">
+            </div>
+        </section>
+
+        <section class="services-section" id="servicesSection">
+            <div class="service-card" data-service="remove-music">
+                <i class="fas fa-music"></i>
+                <h3>إزالة الموسيقى</h3>
+                <p>أزل الموسيقى الخلفية واحتفظ بالصوت الأساسي فقط بدقة عالية</p>
+            </div>
+            <div class="service-card" data-service="extract-audio">
+                <i class="fas fa-file-audio"></i>
+                <h3>استخراج الصوت</h3>
+                <p>حول الفيديو إلى ملف صوتي بصيغة MP3 أو WAV</p>
+            </div>
+            <div class="service-card" data-service="add-music">
+                <i class="fas fa-headphones"></i>
+                <h3>إضافة موسيقى</h3>
+                <p>اختر من مكتبتنا الموسيقية الخالية من حقوق الملكية</p>
+            </div>
+            <div class="service-card" data-service="trim">
+                <i class="fas fa-cut"></i>
+                <h3>قص الفيديو</h3>
+                <p>اختر الجزء المطلوب من الفيديو واحذف الباقي</p>
+            </div>
+            <div class="service-card" data-service="speed">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3>ضبط السرعة</h3>
+                <p>سارع أو أبطئ الفيديو حسب احتياجك</p>
+            </div>
+            <div class="service-card" data-service="merge">
+                <i class="fas fa-object-group"></i>
+                <h3>دمج الفيديوهات</h3>
+                <p>اجمع عدة مقاطع فيديو في ملف واحد</p>
+            </div>
+        </section>
+
+        <section class="preview-section" id="previewSection">
+            <h2>معاينة الفيديو</h2>
+            <div class="video-container">
+                <video controls id="videoPreview"></video>
+            </div>
+            <div class="service-options" id="serviceOptions"></div>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+                <p id="progressText">0% مكتمل</p>
+            </div>
+            <div class="video-controls">
+                <button class="btn" id="processBtn"><i class="fas fa-cogs"></i> بدء المعالجة</button>
+                <button class="btn btn-outline" id="cancelBtn"><i class="fas fa-times"></i> إلغاء</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#" id="homeLink">الرئيسية</a>
+            <a href="#about" id="aboutLink">من نحن</a>
+            <a href="#privacy" id="privacyLink">سياسة الخصوصية</a>
+        </div>
+        <p class="copyright">© 2023 فيديو جينيس. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <!-- من نحن -->
+    <div id="about" class="info-section">
+        <h2>من نحن</h2>
+        <p>
+            فيديو جينيس منصة عربية رائدة في تحرير الفيديوهات باستخدام الذكاء الاصطناعي.<br>
+            نقدم حلولاً ذكية وسهلة للمحتوىين والمبدعين لتحسين مقاطعهم المرئية.<br>
+            مهمتنا تمكين المستخدمين من إنشاء محتوى احترافي بضغطة زر واحدة.
+        </p>
+        <div class="back-btn">
+            <button class="btn" onclick="hideSection('about')">
+                <i class="fas fa-arrow-left"></i> العودة
+            </button>
+        </div>
+    </div>
+
+    <!-- سياسة الخصوصية -->
+    <div id="privacy" class="info-section">
+        <h2>سياسة الخصوصية</h2>
+        <div style="text-align: right;">
+            <p style="margin-bottom: 1rem;">
+                1. نحن نحترم خصوصيتك ولا نشارك بياناتك الشخصية مع أي جهات خارجية.
+            </p>
+            <p style="margin-bottom: 1rem;">
+                2. الملفات التي ترفعها تتم معالجتها بشكل آمن وتُحذف تلقائياً بعد الانتهاء.
+            </p>
+            <p style="margin-bottom: 1rem;">
+                3. نستخدم تقنيات حماية متقدمة لضمان أمان بياناتك.
+            </p>
+        </div>
+        <div class="back-btn">
+            <button class="btn" onclick="hideSection('privacy')">
+                <i class="fas fa-arrow-left"></i> العودة
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const themeToggle = document.getElementById('themeToggle');
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+            const servicesSection = document.getElementById('servicesSection');
+            const previewSection = document.getElementById('previewSection');
+            const videoPreview = document.getElementById('videoPreview');
+            const serviceOptions = document.getElementById('serviceOptions');
+            const processBtn = document.getElementById('processBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const serviceCards = document.querySelectorAll('.service-card');
+
+            // Hide progress bar initially
+            progressContainer.style.display = 'none';
+
+            // Theme Toggle
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // File Upload
+            dropzone.addEventListener('click', () => fileInput.click());
+            
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    const file = e.target.files[0];
+                    showPreview(file);
+                }
+            });
+
+            // Drag and Drop
+            ['dragover', 'dragenter'].forEach(event => {
+                dropzone.addEventListener(event, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('active');
+                });
+            });
+
+            ['dragleave', 'dragend'].forEach(event => {
+                dropzone.addEventListener(event, () => {
+                    dropzone.classList.remove('active');
+                });
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('active');
+                if (e.dataTransfer.files.length) {
+                    showPreview(e.dataTransfer.files[0]);
+                }
+            });
+
+            // Service Selection
+            serviceCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const service = card.getAttribute('data-service');
+                    showServiceOptions(service);
+                });
+            });
+
+            // Cancel Button
+            cancelBtn.addEventListener('click', () => {
+                previewSection.style.display = 'none';
+                servicesSection.style.display = 'grid';
+            });
+
+            // Process Button
+            processBtn.addEventListener('click', () => {
+                processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+                processBtn.disabled = true;
+                
+                // Show progress bar
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '0%';
+                progressText.textContent = '0% مكتمل';
+                
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 10;
+                    if (progress > 100) progress = 100;
+                    
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = `${Math.round(progress)}% مكتمل`;
+                    
+                    if (progress === 100) {
+                        clearInterval(progressInterval);
+                        setTimeout(() => {
+                            showAlert('تمت معالجة الفيديو بنجاح! سيبدأ التحميل الآن');
+                            
+                            // Simulate download
+                            const a = document.createElement('a');
+                            a.href = videoPreview.src;
+                            a.download = 'processed-video.mp4';
+                            a.click();
+                            
+                            processBtn.innerHTML = '<i class="fas fa-cogs"></i> بدء المعالجة';
+                            processBtn.disabled = false;
+                        }, 500);
+                    }
+                }, 300);
+            });
+
+            // Navigation Functions
+            document.getElementById('homeLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.main-container').style.display = 'block';
+                document.querySelectorAll('.info-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+            });
+
+            document.getElementById('aboutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.main-container').style.display = 'none';
+                document.getElementById('about').style.display = 'block';
+            });
+
+            document.getElementById('privacyLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.main-container').style.display = 'none';
+                document.getElementById('privacy').style.display = 'block';
+            });
+
+            function hideSection(sectionId) {
+                document.getElementById(sectionId).style.display = 'none';
+                document.querySelector('.main-container').style.display = 'block';
+            }
+
+            // Alert Function
+            function showAlert(message, type = 'success') {
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type}`;
+                alert.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    ${message}
+                `;
+                document.body.appendChild(alert);
+                
+                setTimeout(() => {
+                    alert.classList.add('show');
+                }, 10);
+                
+                setTimeout(() => {
+                    alert.classList.remove('show');
+                    setTimeout(() => alert.remove(), 500);
+                }, 3000);
+            }
+
+            // Show Preview Function
+            function showPreview(file) {
+                if (!file.type.match('video.*') && !file.type.match('audio.*')) {
+                    showAlert('الرجاء اختيار ملف فيديو أو صوتي صالح', 'danger');
+                    return;
+                }
+
+                // Show loading indicator
+                dropzone.innerHTML = '<i class="fas fa-spinner fa-spin"></i><p>جاري تحميل الملف...</p>';
+                
+                setTimeout(() => {
+                    const mediaURL = URL.createObjectURL(file);
+                    
+                    if (file.type.match('video.*')) {
+                        videoPreview.src = mediaURL;
+                        videoPreview.style.display = 'block';
+                        document.querySelector('.video-container').style.display = 'block';
+                    } else {
+                        videoPreview.style.display = 'none';
+                        document.querySelector('.video-container').style.display = 'none';
+                        
+                        // Add audio player
+                        serviceOptions.innerHTML = `
+                            <div class="audio-player">
+                                <h3 style="color: var(--primary); margin-bottom: 1rem;">معاينة الصوت</h3>
+                                <audio controls style="width: 100%; margin-bottom: 1.5rem;"></audio>
+                                <p>${file.name}</p>
+                            </div>
+                        `;
+                        const audioPlayer = document.querySelector('audio');
+                        audioPlayer.src = mediaURL;
+                    }
+                    
+                    dropzone.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <p>تم تحميل الملف بنجاح</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">${file.name}</p>
+                    `;
+                    
+                    servicesSection.style.display = 'none';
+                    previewSection.style.display = 'block';
+                }, 1000);
+            }
+
+            // Show Service Options Function
+            function showServiceOptions(service) {
+                let optionsHTML = '';
+                
+                switch(service) {
+                    case 'remove-music':
+                        optionsHTML = `
+                            <div class="option" style="margin-bottom: 2rem;">
+                                <h3 style="color: var(--primary); margin-bottom: 1rem;">إعدادات إزالة الموسيقى</h3>
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">مستوى الإزالة:</label>
+                                    <input type="range" min="1" max="100" value="70" style="width: 100%;">
+                                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                                        <span>خفيف</span>
+                                        <span>قوي</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">جودة الإخراج:</label>
+                                    <select style="width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--primary);">
+                                        <option value="high">عالية (أبطأ)</option>
+                                        <option value="medium" selected>متوسطة</option>
+                                        <option value="low">منخفضة (أسرع)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'add-music':
+                        optionsHTML = `
+                            <div class="option" style="margin-bottom: 2rem;">
+                                <h3 style="color: var(--primary); margin-bottom: 1rem;">اختيار الموسيقى</h3>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-align: center; cursor: pointer;">
+                                        <i class="fas fa-music" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);"></i>
+                                        <p>هادئة</p>
+                                    </div>
+                                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-align: center; cursor: pointer;">
+                                        <i class="fas fa-music" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);"></i>
+                                        <p>حماسية</p>
+                                    </div>
+                                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-align: center; cursor: pointer;">
+                                        <i class="fas fa-music" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary);"></i>
+                                        <p>إعلانية</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">مستوى صوت الموسيقى:</label>
+                                    <input type="range" min="1" max="100" value="30" style="width: 100%;">
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'trim':
+                        optionsHTML = `
+                            <div class="option" style="margin-bottom: 2rem;">
+                                <h3 style="color: var(--primary); margin-bottom: 1rem;">قص الفيديو</h3>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <div id="trim-range" style="height: 50px; background: #eee; border-radius: 8px; position: relative;">
+                                        <div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex;">
+                                            <div style="flex: 1; border-right: 1px dashed #999;"></div>
+                                            <div style="flex: 1; border-right: 1px dashed #999;"></div>
+                                            <div style="flex: 1; border-right: 1px dashed #999;"></div>
+                                            <div style="flex: 1;"></div>
+                                        </div>
+                                        <div style="position: absolute; left: 20%; right: 30%; top: 0; bottom: 0; background: rgba(165, 94, 234, 0.3); border: 2px solid var(--primary);"></div>
+                                        <div style="position: absolute; left: 20%; top: -5px; bottom: -5px; width: 10px; background: var(--primary); border-radius: 5px; cursor: ew-resize;"></div>
+                                        <div style="position: absolute; right: 30%; top: -5px; bottom: -5px; width: 10px; background: var(--primary); border-radius: 5px; cursor: ew-resize;"></div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">وقت البداية:</label>
+                                            <input type="text" value="00:00:15" style="width: 100px; padding: 0.5rem; border-radius: 8px; border: 1px solid #ddd;">
+                                        </div>
+                                        <div>
+                                            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">وقت النهاية:</label>
+                                            <input type="text" value="00:01:45" style="width: 100px; padding: 0.5rem; border-radius: 8px; border: 1px solid #ddd;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                }
+
+                serviceOptions.innerHTML = optionsHTML;
+            }
+        });
+    </script>
+</body>
+</html>
